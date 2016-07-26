@@ -1,7 +1,9 @@
-package com.sharathp.myorktimes;
+package com.sharathp.myorktimes.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.sharathp.myorktimes.R;
 
 public class ArticleListActivity extends AppCompatActivity {
 
