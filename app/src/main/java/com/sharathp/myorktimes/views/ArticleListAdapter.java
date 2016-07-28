@@ -77,7 +77,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         return mArticles.size();
     }
 
-    public void setMovies(final List<Article> articles) {
+    public void setArticles(final List<Article> articles) {
         if (articles != null) {
             mArticles = articles;
         } else {
@@ -136,6 +136,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
             Glide.with(itemView.getContext())
                     .load(Constants.getImageUrl(mArticle.getThumbnail().getUrl()))
+                    .centerCrop()
                     .into(mThumbnailImageView);
         }
     }

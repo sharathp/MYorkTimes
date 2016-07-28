@@ -3,6 +3,7 @@ package com.sharathp.myorktimes.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class Article {
@@ -21,7 +22,7 @@ public class Article {
     private Map<String, String> mHeadLines;
 
     @SerializedName("multimedia")
-    private Media[] mMedia;
+    private List<Media> mMedia;
 
     @SerializedName("pub_date")
     private Date mPublishedDate;
@@ -50,11 +51,11 @@ public class Article {
         mHeadLines = headLines;
     }
 
-    public Media[] getMedia() {
+    public List<Media> getMedia() {
         return mMedia;
     }
 
-    public void setMedia(final Media[] media) {
+    public void setMedia(List<Media> media) {
         mMedia = media;
     }
 
@@ -75,12 +76,12 @@ public class Article {
     }
 
     public Media getThumbnail() {
-        if (mMedia == null || mMedia.length < 1) {
+        if (mMedia == null || mMedia.isEmpty()) {
             return null;
         }
 
         // get the first one
-        return mMedia[0];
+        return mMedia.get(0);
     }
 
     public static class Media {

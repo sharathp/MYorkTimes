@@ -52,7 +52,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     protected void onResume() {
         super.onResume();
 
-        mCurrentCall = mArticleRepository.getArticles("trump", "oldest", null);
+        mCurrentCall = mArticleRepository.getArticles("trump", "oldest", "20160112");
         mCurrentCall.enqueue(new Callback<ArticleResponse>() {
             @Override
             public void onResponse(final Call<ArticleResponse> call, final Response<ArticleResponse> response) {
