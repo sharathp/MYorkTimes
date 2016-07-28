@@ -29,7 +29,7 @@ public class APIKeyInterceptor implements Interceptor {
     }
 
     private boolean isNYTimesRequest(final Request request) {
-        return request.url().url().toString().startsWith(Constants.BASE_URL_NY_TIMES);
+        return request.url().url().toString().startsWith(Constants.BASE_URL_API_NY_TIMES);
     }
 
     private Request addAPIKey(final Request request) {

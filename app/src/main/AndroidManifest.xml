@@ -2,6 +2,12 @@
 <manifest package="com.sharathp.myorktimes"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <meta-data
+        android:name="com.sharathp.myorktimes.config.GlideConfiguration"
+        android:value="GlideModule" />
+
     <application
         android:name=".MYorkTimesApplication"
         android:allowBackup="true"
