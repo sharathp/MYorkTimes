@@ -17,10 +17,23 @@ public class ArticleResponse {
         mResponse = response;
     }
 
+    public boolean hasMoreResults() {
+        if (mResponse == null || mResponse.getDocs() == null || mResponse.getDocs().isEmpty()
+                || mResponse.getMeta() == null) {
+            return false;
+        }
+
+        final Meta meta = mResponse.getMeta();
+        return meta.getOffset() + mResponse.getDocs().size() < meta.getHits();
+    }
+
     public static class Response {
 
         @SerializedName("docs")
         private List<Article> mDocs;
+
+        @SerializedName("meta")
+        private Meta mMeta;
 
         public List<Article> getDocs() {
             return mDocs;
@@ -28,6 +41,39 @@ public class ArticleResponse {
 
         public void setDocs(final List<Article> docs) {
             mDocs = docs;
+        }
+
+        public Meta getMeta() {
+            return mMeta;
+        }
+
+        public void setMeta(final Meta meta) {
+            mMeta = meta;
+        }
+    }
+
+    public static class Meta {
+
+        @SerializedName("hits")
+        private int mHits;
+
+        @SerializedName("offset")
+        private int mOffset;
+
+        public int getHits() {
+            return mHits;
+        }
+
+        public void setHits(final int hits) {
+            mHits = hits;
+        }
+
+        public int getOffset() {
+            return mOffset;
+        }
+
+        public void setOffset(final int offset) {
+            mOffset = offset;
         }
     }
 }

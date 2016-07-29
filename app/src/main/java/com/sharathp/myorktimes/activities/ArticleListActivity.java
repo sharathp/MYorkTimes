@@ -20,6 +20,7 @@ import com.sharathp.myorktimes.models.Article;
 import com.sharathp.myorktimes.models.ArticleResponse;
 import com.sharathp.myorktimes.repositories.ArticleRepository;
 import com.sharathp.myorktimes.views.ArticleListAdapter;
+import com.sharathp.myorktimes.views.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,10 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     private Call<ArticleResponse> mCurrentCall;
     private String mCurrentQuery;
 
+
+    private RecyclerView.OnScrollListener mEndlessRecyclerViewScrollListener;
+    private StaggeredGridLayoutManager mLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +55,9 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
         mArticleListAdapter = new ArticleListAdapter(new ArrayList<>(), this);
         final RecyclerView moviesRecyclerView = mBinding.rvArticles;
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         moviesRecyclerView.setAdapter(mArticleListAdapter);
-        moviesRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        moviesRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     @Override
@@ -85,6 +91,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(final String query) {
+                tryClearEndlessRecyclerViewScrollListener();
+
                 mArticleListAdapter.setArticles(null);
                 mCurrentQuery = query;
                 // get the first page of results
@@ -132,13 +140,50 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
                     Toast.makeText(ArticleListActivity.this, "No articles" + response.code(), Toast.LENGTH_LONG).show();
                     return;
                 }
+                setEndlessRecyclerViewScrollListener(articleResponse);
                 mArticleListAdapter.addMovies(articleResponse.getResponse().getDocs());
             }
 
             @Override
             public void onFailure(final Call<ArticleResponse> call, final Throwable t) {
                 Toast.makeText(ArticleListActivity.this, "Error retrieving articles: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                tryClearEndlessRecyclerViewScrollListener();
+            }
+
+            private void setEndlessRecyclerViewScrollListener(final ArticleResponse articleResponse) {
+                final boolean hasMoreResults = articleResponse.hasMoreResults();
+
+                if (hasMoreResults) {
+                    if (mEndlessRecyclerViewScrollListener != null) {
+                        // already set, do nothing
+                        return;
+                    } else {
+                        // looks like first time retrieving results, set the listener
+                        setEndlessRecyclerViewScrollListener();
+                    }
+                } else {
+                    tryClearEndlessRecyclerViewScrollListener();
+                }
+            }
+
+            private void setEndlessRecyclerViewScrollListener() {
+                mEndlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+                    @Override
+                    public void onLoadMore(final int page, final int totalItemsCount) {
+                        retrieveResults(page);
+                    }
+                };
+
+                mBinding.rvArticles.addOnScrollListener(mEndlessRecyclerViewScrollListener);
             }
         });
+    }
+
+    private void tryClearEndlessRecyclerViewScrollListener() {
+        if (mEndlessRecyclerViewScrollListener == null) {
+            return;
+        }
+        mBinding.rvArticles.removeOnScrollListener(mEndlessRecyclerViewScrollListener);
+        mEndlessRecyclerViewScrollListener = null;
     }
 }
