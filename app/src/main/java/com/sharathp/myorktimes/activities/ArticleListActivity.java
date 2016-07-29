@@ -2,9 +2,15 @@ package com.sharathp.myorktimes.activities;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.sharathp.myorktimes.MYorkTimesApplication;
@@ -30,8 +36,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
     private ArticleListAdapter mArticleListAdapter;
     private ActivityArticleListBinding mBinding;
-
     private Call<ArticleResponse> mCurrentCall;
+    private String mCurrentQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,67 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     protected void onResume() {
         super.onResume();
 
-        mCurrentCall = mArticleRepository.getArticles("trump", "oldest", "20160112");
+        if (mCurrentCall != null) {
+            mCurrentCall.cancel();
+        }
+
+        mCurrentCall = null;
+    }
+
+    @Override
+    public void onArticleSelected(final Article article) {
+        // no-op
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_article_list, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(final String query) {
+                mArticleListAdapter.setArticles(null);
+                mCurrentQuery = query;
+                // get the first page of results
+                retrieveResults(0);
+
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+//
+        // Customize searchview text and hint colors
+        final int searchEditId = android.support.v7.appcompat.R.id.search_src_text;
+        final EditText et = (EditText) searchView.findViewById(searchEditId);
+        final int color = getResources().getColor(R.color.colorPrimaryDark);
+        et.setTextColor(color);
+        et.setHintTextColor(color);
+        return true;
+    }
+
+    private void retrieveResults(final int page) {
+        if (mCurrentCall != null) {
+            mCurrentCall.cancel();
+        }
+
+        if (TextUtils.isEmpty(mCurrentQuery)) {
+            return;
+        }
+
+        mCurrentCall = mArticleRepository.getArticles(mCurrentQuery, "oldest", "20160112", page);
         mCurrentCall.enqueue(new Callback<ArticleResponse>() {
             @Override
             public void onResponse(final Call<ArticleResponse> call, final Response<ArticleResponse> response) {
@@ -74,10 +140,5 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
                 Toast.makeText(ArticleListActivity.this, "Error retrieving articles: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    @Override
-    public void onArticleSelected(final Article article) {
-        // no-op
     }
 }

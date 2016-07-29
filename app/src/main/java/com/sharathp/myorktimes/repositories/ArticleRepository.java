@@ -11,6 +11,7 @@ public interface ArticleRepository {
     @GET("svc/search/v2/articlesearch.json")
     Call<ArticleResponse> getArticles(@Query("q") String query,
                                       @Query("sort") String sort,
-                                      @Query("begin_date") String beginDate);
+                                      @Query("begin_date") String beginDate,
+                                      @Query("page") int page);
 
 }
