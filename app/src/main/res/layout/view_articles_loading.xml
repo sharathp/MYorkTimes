@@ -12,14 +12,14 @@
         android:layout_height="wrap_content">
 
         <ProgressBar
-            android:id="@+id/articles_loading_progress_bar"
+            android:id="@+id/pb_loading_progress_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:indeterminateDrawable="@drawable/progress_indeterminate"/>
 
         <TextView
-            android:id="@+id/article_end_message"
+            android:id="@+id/tv_article_end_message"
             android:layout_width="match_parent"
             android:layout_height="@dimen/article_loading_indicator_height"
             android:background="@android:color/white"

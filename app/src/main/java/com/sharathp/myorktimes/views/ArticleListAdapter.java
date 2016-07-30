@@ -38,11 +38,11 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
     @Override
     public int getItemViewType(final int position) {
-        final Article article = mArticles.get(position);
-
         if (isPositionForLoadingIndicator(position)) {
             return TYPE_LOADING;
         }
+
+        final Article article = mArticles.get(position);
 
         if (article.getThumbnail() == null) {
             return TYPE_TEXT_ARTICLE;
@@ -106,7 +106,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
     private boolean isPositionForLoadingIndicator(final int position) {
         // last item is the loading indicator
-        return (position == getItemCount());
+        return (position == mArticles.size());
     }
 
     public void setArticles(final List<Article> articles) {
@@ -115,14 +115,11 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         } else {
             mArticles.clear();
         }
-
-        clearEndReached();
         notifyDataSetChanged();
     }
 
     public void addMovies(final List<Article> articles) {
         mArticles.addAll(articles);
-        clearEndReached();
         notifyDataSetChanged();
     }
 
@@ -134,7 +131,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         }
     }
 
-    private void clearEndReached() {
+    public void clearEndReached() {
         mIsEndReached = false;
         final LoadingItemHolder loadingItemHolder = getLoadingItemHolder();
         if (loadingItemHolder != null) {
@@ -156,7 +153,9 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         private View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                mArticleItemCallback.onArticleSelected(mArticle);
+                if (mArticleItemCallback != null) {
+                    mArticleItemCallback.onArticleSelected(mArticle);
+                }
             }
         };
 
@@ -215,10 +214,10 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
     static class LoadingItemHolder extends AbstractArticleViewHolder {
 
-        @BindView(R.id.articles_loading_progress_bar)
+        @BindView(R.id.pb_loading_progress_bar)
         ProgressBar mLoadingProgressBar;
 
-        @BindView(R.id.article_end_message)
+        @BindView(R.id.tv_article_end_message)
         TextView mEndOfArticlesTextView;
 
         public LoadingItemHolder(final View itemView) {

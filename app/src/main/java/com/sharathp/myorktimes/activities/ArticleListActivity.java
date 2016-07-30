@@ -8,10 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.sharathp.myorktimes.MYorkTimesApplication;
 import com.sharathp.myorktimes.R;
@@ -56,6 +57,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         mArticleListAdapter = new ArticleListAdapter(new ArrayList<>(), this);
         final RecyclerView moviesRecyclerView = mBinding.rvArticles;
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         moviesRecyclerView.setAdapter(mArticleListAdapter);
         moviesRecyclerView.setLayoutManager(mLayoutManager);
     }
@@ -92,8 +94,10 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
             @Override
             public boolean onQueryTextSubmit(final String query) {
                 tryClearEndlessRecyclerViewScrollListener();
-
                 mArticleListAdapter.setArticles(null);
+                mArticleListAdapter.clearEndReached();
+                showInitialLoader();
+
                 mCurrentQuery = query;
                 // get the first page of results
                 retrieveResults(0);
@@ -118,6 +122,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     }
 
     private void retrieveResults(final int page) {
+        Log.d(TAG, "Retrieving results: " + page);
+
         if (mCurrentCall != null) {
             mCurrentCall.cancel();
         }
@@ -131,56 +137,103 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
             @Override
             public void onResponse(final Call<ArticleResponse> call, final Response<ArticleResponse> response) {
                 if (! response.isSuccessful()) {
-                    Toast.makeText(ArticleListActivity.this, "Error retrieving articles: " + response.code(), Toast.LENGTH_LONG).show();
+                    showMessageIfInitialLoad("Error retrieving articles");
                     return;
                 }
 
                 final ArticleResponse articleResponse = response.body();
-                if (articleResponse == null || articleResponse.getResponse() == null || articleResponse.getResponse().getDocs() == null) {
-                    Toast.makeText(ArticleListActivity.this, "No articles" + response.code(), Toast.LENGTH_LONG).show();
+                if (articleResponse == null
+                        || articleResponse.getResponse() == null
+                        || articleResponse.getResponse().getDocs() == null
+                        || articleResponse.getResponse().getDocs().isEmpty()) {
+                    showMessageIfInitialLoad("No articles found for the search criteria");
                     return;
                 }
 
+                showArticlesRecyclerViewIfInitialLoad();
                 setEndlessRecyclerViewScrollListener(articleResponse);
                 mArticleListAdapter.addMovies(articleResponse.getResponse().getDocs());
+                Log.d(TAG, "Results size: " + mArticleListAdapter.getItemCount());
             }
 
             @Override
             public void onFailure(final Call<ArticleResponse> call, final Throwable t) {
-                Toast.makeText(ArticleListActivity.this, "Error retrieving articles: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                markNoMoreItemsToLoad();
+                showMessageIfInitialLoad("Error retrieving articles");
             }
 
             private void setEndlessRecyclerViewScrollListener(final ArticleResponse articleResponse) {
                 final boolean hasMoreResults = articleResponse.hasMoreResults();
 
-                if (!hasMoreResults) {
+                if (! hasMoreResults) {
                     markNoMoreItemsToLoad();
                     return;
                 }
 
-                if (mEndlessRecyclerViewScrollListener != null) {
+                if (mEndlessRecyclerViewScrollListener == null) {
                     // looks like first time retrieving results, set the listener
-                    setEndlessRecyclerViewScrollListener();
+                    ArticleListActivity.this.setEndlessRecyclerViewScrollListener();
                 }
             }
-
-            private void setEndlessRecyclerViewScrollListener() {
-                mEndlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
-                    @Override
-                    public void onLoadMore(final int page, final int totalItemsCount) {
-                        retrieveResults(page);
-                    }
-                };
-
-                mBinding.rvArticles.addOnScrollListener(mEndlessRecyclerViewScrollListener);
-            }
-
-            private void markNoMoreItemsToLoad() {
-                mEndlessRecyclerViewScrollListener.setEndReached(true);
-                mArticleListAdapter.setEndReached();
-            }
         });
+    }
+
+    private boolean isInitialLoad() {
+        return mArticleListAdapter.getItemCount() == 0;
+    }
+
+    private void showMessageIfInitialLoad(final String message) {
+        if (! isInitialLoad()) {
+            // items already exist, so, message shouldn't be displayed, instead mark no items to load
+            markNoMoreItemsToLoad();
+            return;
+        }
+
+        mBinding.rvArticles.setVisibility(View.GONE);
+
+        mBinding.flMessageContainer.setVisibility(View.VISIBLE);
+        mBinding.tvArticlesMessage.setVisibility(View.VISIBLE);
+        mBinding.pbAllArticlesLoadingBar.setVisibility(View.GONE);
+
+        mBinding.tvArticlesMessage.setText(message);
+    }
+
+    private void showInitialLoader() {
+        mBinding.rvArticles.setVisibility(View.GONE);
+
+        mBinding.flMessageContainer.setVisibility(View.VISIBLE);
+        mBinding.pbAllArticlesLoadingBar.setVisibility(View.VISIBLE);
+        mBinding.tvArticlesMessage.setVisibility(View.GONE);
+    }
+
+    private void showArticlesRecyclerViewIfInitialLoad() {
+        if (! isInitialLoad()) {
+            // recycler view should be already visible, nothing to do
+            return;
+        }
+
+        mBinding.rvArticles.setVisibility(View.VISIBLE);
+
+        mBinding.flMessageContainer.setVisibility(View.GONE);
+        mBinding.pbAllArticlesLoadingBar.setVisibility(View.GONE);
+        mBinding.tvArticlesMessage.setVisibility(View.GONE);
+    }
+
+    private void setEndlessRecyclerViewScrollListener() {
+        mEndlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(final int page, final int totalItemsCount) {
+                retrieveResults(page);
+            }
+        };
+
+        mBinding.rvArticles.addOnScrollListener(mEndlessRecyclerViewScrollListener);
+    }
+
+    private void markNoMoreItemsToLoad() {
+        if (mEndlessRecyclerViewScrollListener != null) {
+            mEndlessRecyclerViewScrollListener.setEndReached(true);
+        }
+        mArticleListAdapter.setEndReached();
     }
 
     private void tryClearEndlessRecyclerViewScrollListener() {
