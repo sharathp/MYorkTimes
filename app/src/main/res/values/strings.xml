@@ -4,4 +4,5 @@
     <string name="action_search">Search</string>
     <string name="message_end_of_articles">No more Articles to display</string>
     <string name="message_articles_initial">Start searching for articles above</string>
+    <string name="label_filter">Filter</string>
 </resources>

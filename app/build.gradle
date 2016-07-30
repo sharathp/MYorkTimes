@@ -4,7 +4,7 @@ apply plugin: 'android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 
 ext {
-    APPCOMPAT_VERSION = "24.1.0"
+    APPCOMPAT_VERSION = "23.4.0"
     JUNIT_VERSION = "4.12"
     RETROFIT_VERSION = "2.1.0"
     GLIDE_VERSION = "3.7.0"
@@ -21,15 +21,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
 
     dataBinding.enabled = true
 
     defaultConfig {
         applicationId "com.sharathp.myorktimes"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }

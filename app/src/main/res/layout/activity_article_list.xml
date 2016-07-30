@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/main_content"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/toolbar_layout"
-            layout="@layout/toolbar"/>
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+            <include
+                android:id="@+id/toolbar_layout"
+                layout="@layout/toolbar"/>
+
+        </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_articles"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin_list_activity"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"/>
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <FrameLayout
             android:id="@+id/fl_message_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingRight="5dp"
-            android:paddingLeft="5dp">
+            android:paddingRight="@dimen/margin_xxsmall"
+            android:paddingLeft="@dimen/margin_xxsmall">
 
             <ProgressBar
                 android:id="@+id/pb_all_articles_loading_bar"
@@ -46,8 +54,23 @@
                 android:text="@string/message_articles_initial"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
-                android:textSize="20sp"/>
+                android:textSize="@dimen/text_size_message_article_list"/>
         </FrameLayout>
 
-    </LinearLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="@dimen/margin_medium"
+            app:elevation="@dimen/fab_elevation"
+            app:borderWidth="0dp"
+            app:layout_behavior="com.sharathp.myorktimes.views.behaviors.ScrollAwareFABBehavior"
+            android:text="@string/label_filter"
+            android:contentDescription="@string/label_filter"
+            android:src="@drawable/ic_filter"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
 </layout>

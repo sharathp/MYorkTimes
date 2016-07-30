@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -7,7 +8,8 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:background="@color/colorPrimaryLight"
-        android:theme="@style/ToolbarTheme">
+        android:theme="@style/ToolbarTheme"
+        app:layout_scrollFlags="scroll|enterAlways">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -22,7 +24,6 @@
             android:textColor="@color/colorPrimaryDark"
             android:letterSpacing="0.15"
             android:layout_gravity="center"/>
-
     </android.support.v7.widget.Toolbar>
 
 </layout>
