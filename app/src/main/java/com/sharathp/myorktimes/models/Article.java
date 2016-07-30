@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Article {
     private static final String KEY_HEADLINE_MAIN = "main";
@@ -26,6 +27,9 @@ public class Article {
 
     @SerializedName("pub_date")
     private Date mPublishedDate;
+
+    // randomly chose media
+    private Media mSelectedMedia;
 
     public String getId() {
         return mId;
@@ -80,17 +84,22 @@ public class Article {
             return null;
         }
 
-        // get the first one
-        return mMedia.get(0);
+        // if an image was previously selected, return it
+        if (mSelectedMedia == null) {
+            // get random image
+            final int index = new Random().nextInt(mMedia.size());
+            mSelectedMedia = mMedia.get(index);
+        }
+        return mSelectedMedia;
     }
 
     public static class Media {
 
         @SerializedName("width")
-        private String mWidth;
+        private int mWidth;
 
         @SerializedName("height")
-        private String mHeight;
+        private int mHeight;
 
         @SerializedName("url")
         private String mUrl;
@@ -101,19 +110,19 @@ public class Article {
         @SerializedName("subtype")
         private String mSubtype;
 
-        public String getWidth() {
+        public int getWidth() {
             return mWidth;
         }
 
-        public void setWidth(final String width) {
+        public void setWidth(final int width) {
             mWidth = width;
         }
 
-        public String getHeight() {
+        public int getHeight() {
             return mHeight;
         }
 
-        public void setHeight(final String height) {
+        public void setHeight(final int height) {
             mHeight = height;
         }
 

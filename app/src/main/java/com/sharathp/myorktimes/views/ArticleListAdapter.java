@@ -190,10 +190,32 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         public void doBind() {
             mTitleTextView.setText(mArticle.getMainHeadLine());
 
+            final Article.Media image = mArticle.getThumbnail();
+            // set height
+            setThumbnailImageViewDimensions(image);
+
+//            mThumbnailImageView.setHeightRatio((float)media.getHeight()/(float)media.getWidth());
+
+//            Picasso.with(itemView.getContext())
+//                    .load(Constants.getPosterImageUrl(mMovie.getPosterPath()))
+//                    .fit()
+//                    .centerInside()
+//                    .placeholder(R.drawable.placeholder)
+//                    .error(R.drawable.error_placeholder)
+//                    .transform(new RoundedCornersTransformation(Constants.ROUND_TRANSFORMATION_RADIUS, Constants.ROUND_TRANSFORMATION_MARGIN))
+//                    .into(mPosterImageView);
+
             Glide.with(itemView.getContext())
-                    .load(Constants.getImageUrl(mArticle.getThumbnail().getUrl()))
-                    .centerCrop()
+                    .load(Constants.getImageUrl(image.getUrl()))
+                    .fitCenter()
                     .into(mThumbnailImageView);
+        }
+
+        private void setThumbnailImageViewDimensions(final Article.Media image) {
+            final int viewWidth = mThumbnailImageView.getWidth();
+            final float viewHeight = ((float)image.getHeight()/(float)image.getWidth()) * viewWidth;
+            mThumbnailImageView.getLayoutParams().height = (int) viewHeight;
+            itemView.requestLayout();
         }
     }
 

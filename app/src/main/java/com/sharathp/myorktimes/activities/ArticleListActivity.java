@@ -60,6 +60,12 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         moviesRecyclerView.setAdapter(mArticleListAdapter);
         moviesRecyclerView.setLayoutManager(mLayoutManager);
+        mBinding.fabFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+
+            }
+        });
     }
 
     @Override
