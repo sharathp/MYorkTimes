@@ -5,20 +5,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.models.Article;
 import com.sharathp.myorktimes.util.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.AbstractArticleViewHolder> {
     private static final int TYPE_IMAGE_ARTICLE = 0;
@@ -176,7 +176,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     public static class ImageArticleViewHolder extends AbstractArticleViewHolder {
 
         @BindView(R.id.iv_article_thumbnail)
-        ImageView mThumbnailImageView;
+        DynamicHeightImageView mThumbnailImageView;
 
         @BindView(R.id.tv_article_title)
         TextView mTitleTextView;
@@ -191,31 +191,16 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
             mTitleTextView.setText(mArticle.getMainHeadLine());
 
             final Article.Media image = mArticle.getThumbnail();
-            // set height
-            setThumbnailImageViewDimensions(image);
+            mThumbnailImageView.setHeightRatio((float) image.getHeight() / (float)image.getWidth());
 
-//            mThumbnailImageView.setHeightRatio((float)media.getHeight()/(float)media.getWidth());
-
-//            Picasso.with(itemView.getContext())
-//                    .load(Constants.getPosterImageUrl(mMovie.getPosterPath()))
-//                    .fit()
-//                    .centerInside()
-//                    .placeholder(R.drawable.placeholder)
-//                    .error(R.drawable.error_placeholder)
-//                    .transform(new RoundedCornersTransformation(Constants.ROUND_TRANSFORMATION_RADIUS, Constants.ROUND_TRANSFORMATION_MARGIN))
-//                    .into(mPosterImageView);
-
-            Glide.with(itemView.getContext())
+            Picasso.with(itemView.getContext())
                     .load(Constants.getImageUrl(image.getUrl()))
-                    .fitCenter()
+                    .fit()
+                    .centerInside()
+                    .placeholder(R.drawable.ic_progress_indeterminate)
+                    .error(R.drawable.ic_error)
+                    .transform(new RoundedCornersTransformation(Constants.ROUND_TRANSFORMATION_RADIUS, Constants.ROUND_TRANSFORMATION_MARGIN))
                     .into(mThumbnailImageView);
-        }
-
-        private void setThumbnailImageViewDimensions(final Article.Media image) {
-            final int viewWidth = mThumbnailImageView.getWidth();
-            final float viewHeight = ((float)image.getHeight()/(float)image.getWidth()) * viewWidth;
-            mThumbnailImageView.getLayoutParams().height = (int) viewHeight;
-            itemView.requestLayout();
         }
     }
 

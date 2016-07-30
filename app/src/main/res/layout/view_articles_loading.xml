@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:indeterminateDrawable="@drawable/progress_indeterminate"/>
+            android:indeterminateDrawable="@drawable/ic_progress_indeterminate"/>
 
         <TextView
             android:id="@+id/tv_article_end_message"

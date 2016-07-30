@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:indeterminate="true"
-                android:indeterminateDrawable="@drawable/progress_indeterminate"
+                android:indeterminateDrawable="@drawable/ic_progress_indeterminate"
                 android:visibility="gone"/>
 
             <TextView
