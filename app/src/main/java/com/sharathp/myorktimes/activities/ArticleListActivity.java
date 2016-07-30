@@ -2,6 +2,7 @@ package com.sharathp.myorktimes.activities;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import com.sharathp.myorktimes.MYorkTimesApplication;
 import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.databinding.ActivityArticleListBinding;
+import com.sharathp.myorktimes.fragments.FiltersFragment;
 import com.sharathp.myorktimes.models.Article;
 import com.sharathp.myorktimes.models.ArticleResponse;
 import com.sharathp.myorktimes.repositories.ArticleRepository;
@@ -63,9 +65,15 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         mBinding.fabFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-
+                showFiltersDialog();
             }
         });
+    }
+
+    private void showFiltersDialog() {
+        final FragmentManager fm = getSupportFragmentManager();
+        final FiltersFragment editNameDialogFragment = FiltersFragment.createInstance();
+        editNameDialogFragment.show(fm, "filters_fragment");
     }
 
     @Override

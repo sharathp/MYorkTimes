@@ -63,12 +63,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/margin_medium"
-            app:elevation="@dimen/fab_elevation"
-            app:borderWidth="0dp"
-            app:layout_behavior="com.sharathp.myorktimes.views.behaviors.ScrollAwareFABBehavior"
             android:text="@string/label_filter"
             android:contentDescription="@string/label_filter"
-            android:src="@drawable/ic_filter"/>
+            android:src="@drawable/ic_filter"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:elevation="@dimen/fab_elevation"
+            app:borderWidth="0dp"
+            app:layout_behavior="com.sharathp.myorktimes.views.behaviors.ScrollAwareFABBehavior"/>
 
     </android.support.design.widget.CoordinatorLayout>
 

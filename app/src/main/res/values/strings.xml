@@ -5,4 +5,6 @@
     <string name="message_end_of_articles">No more Articles to display</string>
     <string name="message_articles_initial">Start searching for articles above</string>
     <string name="label_filter">Filter</string>
+    <string name="hint_article_from_date">From Date</string>
+    <string name="title_search_filters">Search Filters</string>
 </resources>

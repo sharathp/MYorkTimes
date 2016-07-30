@@ -10,6 +10,6 @@ public class Constants {
     public static final int ROUND_TRANSFORMATION_MARGIN = 5;
 
     public static String getImageUrl(final String relativePath) {
-        return String.format(URL_IMAGE_NY_TIMES + "/12345", relativePath);
+        return String.format(URL_IMAGE_NY_TIMES, relativePath);
     }
 }
