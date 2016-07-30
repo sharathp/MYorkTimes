@@ -19,4 +19,20 @@
         <item name="colorControlNormal">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="FilterFieldLabel" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="FilterFloatingLabel" parent="Widget.Design.TextInputLayout">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="hintTextAppearance">@style/FilterFloatingLabel.TextAppearance.Design.Hint</item>
+    </style>
+
+    <style name="FilterFloatingLabel.TextAppearance.Design.Hint" parent="TextAppearance.Design.Hint">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

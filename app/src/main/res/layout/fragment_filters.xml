@@ -1,39 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical">
+        android:focusableInTouchMode="true">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/title_search_filters"
             android:textColor="@color/colorPrimaryDark"
             android:layout_marginBottom="@dimen/margin_medium"
             android:textSize="16sp"
+            android:textStyle="bold"
             android:background="@color/colorPrimaryLight"
             android:minHeight="?attr/actionBarSize"
             android:gravity="center"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/til_article_from_date"
-            android:paddingLeft="@dimen/margin_small"
-            android:paddingRight="@dimen/margin_small"
+            android:layout_below="@id/tv_title"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small">
+            android:layout_marginBottom="@dimen/margin_small"
+            style="@style/FilterFloatingLabel">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tie_article_from_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_article_from_date"
-                android:imeOptions="actionNone"/>
+                android:imeOptions="actionNone"
+                style="@style/FilterFieldLabel"/>
         </android.support.design.widget.TextInputLayout>
 
-    </LinearLayout>
+        <View style="@style/Divider"
+              android:id="@+id/divider1"
+              android:layout_below="@id/til_article_from_date"
+              android:layout_marginBottom="@dimen/margin_medium" />
+
+        <TextView
+            android:id="@+id/tv_sort_order_label"
+            android:layout_below="@id/divider1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/til_article_from_date"
+            android:layout_marginRight="@dimen/margin_small"
+            android:text="Sort Order"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/search_sort_order"
+            android:layout_alignBaseline="@id/tv_sort_order_label"
+            android:layout_toRightOf="@id/tv_sort_order_label" />
+
+    </RelativeLayout>
 
 </layout>

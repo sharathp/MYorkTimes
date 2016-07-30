@@ -7,4 +7,10 @@
     <string name="label_filter">Filter</string>
     <string name="hint_article_from_date">From Date</string>
     <string name="title_search_filters">Search Filters</string>
+
+
+    <string-array name="search_sort_order">
+        <item>NEWEST</item>
+        <item>OLDEST</item>
+    </string-array>
 </resources>
