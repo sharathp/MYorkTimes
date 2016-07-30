@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -13,6 +14,7 @@ import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.models.Article;
 import com.sharathp.myorktimes.util.Constants;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import butterknife.BindView;
@@ -21,6 +23,10 @@ import butterknife.ButterKnife;
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.AbstractArticleViewHolder> {
     private static final int TYPE_IMAGE_ARTICLE = 0;
     private static final int TYPE_TEXT_ARTICLE = 1;
+    private static final int TYPE_LOADING = 2;
+    private boolean mIsEndReached;
+    // weak reference to not avoid garbage collection the instance..
+    private WeakReference<LoadingItemHolder> mLoadingItemHolder;
 
     private List<Article> mArticles;
     private final ArticleItemCallback mArticleItemCallback;
@@ -33,6 +39,10 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     @Override
     public int getItemViewType(final int position) {
         final Article article = mArticles.get(position);
+
+        if (isPositionForLoadingIndicator(position)) {
+            return TYPE_LOADING;
+        }
 
         if (article.getThumbnail() == null) {
             return TYPE_TEXT_ARTICLE;
@@ -56,6 +66,10 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
                 final View movieView = inflater.inflate(R.layout.item_article_text, parent, false);
                 return new TextArticleViewHolder(movieView, mArticleItemCallback);
             }
+            case TYPE_LOADING: {
+                final View view = inflater.inflate(R.layout.view_articles_loading, parent, false);
+                return new LoadingItemHolder(view);
+            }
             default: {
                 throw new IllegalArgumentException("Invalid viewType: " + viewType);
             }
@@ -64,17 +78,35 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
     @Override
     public void onBindViewHolder(final AbstractArticleViewHolder holder, final int position) {
+        // this is loading indicator, so, do nothing
+        if (isPositionForLoadingIndicator(position)) {
+            // maintain a reference to holder to handle the case where mEndOfFeedReached is set
+            // after the view is bound here
+            mLoadingItemHolder = new WeakReference<>((LoadingItemHolder)holder);
+            // bind it here since the cursor is already exhausted at this point and super class would complain about it..
+            if (mIsEndReached) {
+                ((LoadingItemHolder)holder).showEndOfFeedReached();
+            }
+            return;
+        }
+
         Article article = mArticles.get(position);
         holder.bind(article);
     }
 
     @Override
     public int getItemCount() {
-        if (mArticles == null) {
+        if (mArticles == null || mArticles.isEmpty()) {
             return 0;
         }
 
-        return mArticles.size();
+        // to show the spinner
+        return mArticles.size() + 1;
+    }
+
+    private boolean isPositionForLoadingIndicator(final int position) {
+        // last item is the loading indicator
+        return (position == getItemCount());
     }
 
     public void setArticles(final List<Article> articles) {
@@ -84,12 +116,37 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
             mArticles.clear();
         }
 
+        clearEndReached();
         notifyDataSetChanged();
     }
 
     public void addMovies(final List<Article> articles) {
         mArticles.addAll(articles);
+        clearEndReached();
         notifyDataSetChanged();
+    }
+
+    public void setEndReached() {
+        mIsEndReached = true;
+        final LoadingItemHolder loadingItemHolder = getLoadingItemHolder();
+        if (loadingItemHolder != null) {
+            loadingItemHolder.showEndOfFeedReached();
+        }
+    }
+
+    private void clearEndReached() {
+        mIsEndReached = false;
+        final LoadingItemHolder loadingItemHolder = getLoadingItemHolder();
+        if (loadingItemHolder != null) {
+            loadingItemHolder.hideEndOfFeedReached();
+        }
+    }
+
+    private LoadingItemHolder getLoadingItemHolder() {
+        if (mLoadingItemHolder == null) {
+            return null;
+        }
+        return mLoadingItemHolder.get();
     }
 
     public static abstract class AbstractArticleViewHolder extends RecyclerView.ViewHolder {
@@ -141,7 +198,7 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         }
     }
 
-    public static class TextArticleViewHolder extends AbstractArticleViewHolder {
+    static class TextArticleViewHolder extends AbstractArticleViewHolder {
 
         @BindView(R.id.tv_article_title)
         TextView mTitleTextView;
@@ -153,6 +210,35 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
         public void doBind() {
             mTitleTextView.setText(mArticle.getMainHeadLine());
+        }
+    }
+
+    static class LoadingItemHolder extends AbstractArticleViewHolder {
+
+        @BindView(R.id.articles_loading_progress_bar)
+        ProgressBar mLoadingProgressBar;
+
+        @BindView(R.id.article_end_message)
+        TextView mEndOfArticlesTextView;
+
+        public LoadingItemHolder(final View itemView) {
+            super(itemView, null);
+            ButterKnife.bind(this, itemView);
+        }
+
+        public void showEndOfFeedReached() {
+            mLoadingProgressBar.setVisibility(View.GONE);
+            mEndOfArticlesTextView.setVisibility(View.VISIBLE);
+        }
+
+        public void hideEndOfFeedReached() {
+            mLoadingProgressBar.setVisibility(View.VISIBLE);
+            mEndOfArticlesTextView.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected void doBind() {
+            // no-op
         }
     }
 

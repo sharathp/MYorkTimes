@@ -31,6 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ArticleListActivity extends AppCompatActivity implements ArticleListAdapter.ArticleItemCallback {
+    private static final String TAG = ArticleListActivity.class.getSimpleName();
 
     @Inject
     ArticleRepository mArticleRepository;
@@ -40,8 +41,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     private Call<ArticleResponse> mCurrentCall;
     private String mCurrentQuery;
 
-
-    private RecyclerView.OnScrollListener mEndlessRecyclerViewScrollListener;
+    private EndlessRecyclerViewScrollListener mEndlessRecyclerViewScrollListener;
     private StaggeredGridLayoutManager mLayoutManager;
 
     @Override
@@ -107,7 +107,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
                 return false;
             }
         });
-//
+
         // Customize searchview text and hint colors
         final int searchEditId = android.support.v7.appcompat.R.id.search_src_text;
         final EditText et = (EditText) searchView.findViewById(searchEditId);
@@ -140,6 +140,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
                     Toast.makeText(ArticleListActivity.this, "No articles" + response.code(), Toast.LENGTH_LONG).show();
                     return;
                 }
+
                 setEndlessRecyclerViewScrollListener(articleResponse);
                 mArticleListAdapter.addMovies(articleResponse.getResponse().getDocs());
             }
@@ -147,22 +148,20 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
             @Override
             public void onFailure(final Call<ArticleResponse> call, final Throwable t) {
                 Toast.makeText(ArticleListActivity.this, "Error retrieving articles: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                tryClearEndlessRecyclerViewScrollListener();
+                markNoMoreItemsToLoad();
             }
 
             private void setEndlessRecyclerViewScrollListener(final ArticleResponse articleResponse) {
                 final boolean hasMoreResults = articleResponse.hasMoreResults();
 
-                if (hasMoreResults) {
-                    if (mEndlessRecyclerViewScrollListener != null) {
-                        // already set, do nothing
-                        return;
-                    } else {
-                        // looks like first time retrieving results, set the listener
-                        setEndlessRecyclerViewScrollListener();
-                    }
-                } else {
-                    tryClearEndlessRecyclerViewScrollListener();
+                if (!hasMoreResults) {
+                    markNoMoreItemsToLoad();
+                    return;
+                }
+
+                if (mEndlessRecyclerViewScrollListener != null) {
+                    // looks like first time retrieving results, set the listener
+                    setEndlessRecyclerViewScrollListener();
                 }
             }
 
@@ -175,6 +174,11 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
                 };
 
                 mBinding.rvArticles.addOnScrollListener(mEndlessRecyclerViewScrollListener);
+            }
+
+            private void markNoMoreItemsToLoad() {
+                mEndlessRecyclerViewScrollListener.setEndReached(true);
+                mArticleListAdapter.setEndReached();
             }
         });
     }

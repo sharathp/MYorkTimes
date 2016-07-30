@@ -2,4 +2,5 @@
     <string name="app_name">MYorkTimes</string>
 
     <string name="action_search">Search</string>
+    <string name="message_end_of_articles">No more Articles to display</string>
 </resources>

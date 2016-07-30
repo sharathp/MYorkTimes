@@ -22,6 +22,9 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     // Sets the starting page index
     private int startingPageIndex = 0;
 
+    // indicate whether the end of the list is reached (useful for finite lists)
+    private boolean mIsEndReached;
+
     RecyclerView.LayoutManager mLayoutManager;
 
     public EndlessRecyclerViewScrollListener(LinearLayoutManager layoutManager) {
@@ -56,6 +59,10 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     // but first we check if we are waiting for the previous load to finish.
     @Override
     public void onScrolled(RecyclerView view, int dx, int dy) {
+        if (mIsEndReached) {
+            return;
+        }
+
         int lastVisibleItemPosition = 0;
         int totalItemCount = mLayoutManager.getItemCount();
 
@@ -95,6 +102,10 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
             onLoadMore(currentPage, totalItemCount);
             loading = true;
         }
+    }
+
+    public void setEndReached(final boolean endReached) {
+        mIsEndReached = endReached;
     }
 
     // Defines the process for actually loading more data based on page
