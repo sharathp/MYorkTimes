@@ -32,6 +32,9 @@ public class Article {
     @SerializedName("pub_date")
     Date mPublishedDate;
 
+    @SerializedName("byline")
+    ByLine mByLine;
+
     // randomly chose media
     @Transient
     private Media mSelectedMedia;
@@ -74,6 +77,14 @@ public class Article {
 
     public void setPublishedDate(final Date publishedDate) {
         mPublishedDate = publishedDate;
+    }
+
+    public ByLine getByLine() {
+        return mByLine;
+    }
+
+    public void setByLine(ByLine byLine) {
+        mByLine = byLine;
     }
 
     public String getMainHeadLine() {
@@ -156,4 +167,44 @@ public class Article {
             mSubtype = subtype;
         }
     }
+
+    @Parcel
+    public static class ByLine {
+        private final static String PREFIX_BY = "By ";
+
+        @SerializedName("original")
+        String mOriginal;
+
+        @SerializedName("organization")
+        String mOrganization;
+
+        public String getOriginal() {
+            return mOriginal;
+        }
+
+        public void setOriginal(final String original) {
+            mOriginal = original;
+        }
+
+        public String getOrganization() {
+            return mOrganization;
+        }
+
+        public void setOrganization(final String organization) {
+            mOrganization = organization;
+        }
+
+        // removes "By" if it exists
+        public String getOriginalAuthor() {
+            if (getOriginal() == null) {
+                return null;
+            }
+
+            if (mOriginal.startsWith(PREFIX_BY)) {
+                return mOriginal.substring(PREFIX_BY.length(), mOriginal.length());
+            }
+            return mOriginal;
+        }
+    }
+
 }

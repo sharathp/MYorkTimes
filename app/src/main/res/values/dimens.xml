@@ -9,6 +9,7 @@
     <dimen name="text_size_message_article_list">20sp</dimen>
 
     <dimen name="margin_xxsmall">4dp</dimen>
+    <dimen name="margin_xsmall">8dp</dimen>
     <dimen name="margin_small">12dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_normal">24dp</dimen>

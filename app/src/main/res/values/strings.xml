@@ -18,6 +18,7 @@
     <string name="filter_label_sort_order">Sort Order</string>
     <string name="filter_label_news_desk">News Desk</string>
     <string name="share_intent_title">Share using</string>
+    <string name="author_name_unknown">N/A</string>
 
 
     <string-array name="filter_sort_order">

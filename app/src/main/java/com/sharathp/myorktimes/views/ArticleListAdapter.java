@@ -1,6 +1,7 @@
 package com.sharathp.myorktimes.views;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.models.Article;
 import com.sharathp.myorktimes.util.Constants;
+import com.sharathp.myorktimes.util.DateUtils;
+import com.sharathp.myorktimes.util.TextUtils;
 import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
@@ -150,6 +153,14 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
         protected final ArticleItemCallback mArticleItemCallback;
         protected Article mArticle;
 
+        @Nullable
+        @BindView(R.id.tv_article_pub_by)
+        TextView mPublishedByTextView;
+
+        @Nullable
+        @BindView(R.id.tv_article_pub_date)
+        TextView mPublishedDateTextView;
+
         private View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -167,6 +178,15 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
         public final void bind(final Article article) {
             mArticle = article;
+
+            String author = itemView.getContext().getString(R.string.author_name_unknown);
+            if (article.getByLine() != null && article.getByLine().getOriginal() != null) {
+                author = TextUtils.convertToTitleCase(article.getByLine().getOriginalAuthor());
+            }
+
+            mPublishedByTextView.setText(author);
+            mPublishedDateTextView.setText(DateUtils.getRelativeTime(article.getPublishedDate()));
+
             doBind();
         }
 
