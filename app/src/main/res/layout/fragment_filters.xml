@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="filters" type="com.sharathp.myorktimes.models.Filters"/>
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +35,7 @@
             <TextView
                 android:id="@+id/tv_filter_start_date"
                 style="@style/FilterValue"
-                android:text="01 Jan 2010"/>
+                app:filterStartDate="@{filters.startDate}"/>
 
         </LinearLayout>
 
@@ -47,7 +52,7 @@
             <TextView
                 android:id="@+id/tv_filter_sort"
                 style="@style/FilterValue"
-                android:text="Newest" />
+                android:text="@{filters.sort}" />
 
         </LinearLayout>
 
@@ -64,7 +69,7 @@
             <TextView
                 android:id="@+id/tv_filter_news_desk"
                 style="@style/FilterValue"
-                android:text="@string/filter_news_desk_none_selected"/>
+                app:newsDeskSections="@{filters.newsDeskSections}"/>
 
         </LinearLayout>
 
