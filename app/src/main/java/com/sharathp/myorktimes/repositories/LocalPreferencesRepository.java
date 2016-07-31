@@ -42,7 +42,10 @@ public class LocalPreferencesRepository {
     }
 
     public Set<String> getPreferredNewsDeskSections() {
-        return mSharedPreferences.getStringSet(KEY_NEWS_DESK_SECTIONS, new HashSet<>());
+        final Set<String> newsDeskSections = mSharedPreferences.getStringSet(KEY_NEWS_DESK_SECTIONS, new HashSet<>());
+        // return a copy as modifying it will cause unexpected issues -
+        // https://developer.android.com/reference/android/content/SharedPreferences.html#getStringSet(java.lang.String, java.util.Set<java.lang.String>)
+        return new HashSet<>(newsDeskSections);
     }
 
     public void savePreferredNewsDeskSection(final String section) {
