@@ -42,6 +42,23 @@
         <View style="@style/DialogDivider" />
 
         <LinearLayout
+            android:id="@+id/ll_article_to_date_container"
+            style="@style/FilterContainer">
+
+            <TextView
+                style="@style/FilterLabel"
+                android:text="@string/filter_label_to_date" />
+
+            <TextView
+                android:id="@+id/tv_filter_end_date"
+                style="@style/FilterValue"
+                app:filterEndDate="@{filters.endDate}"/>
+
+        </LinearLayout>
+
+        <View style="@style/DialogDivider" />
+
+        <LinearLayout
             android:id="@+id/ll_article_sort_container"
             style="@style/FilterContainer">
 

@@ -153,7 +153,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
             return;
         }
 
-        mCurrentCall = mArticleRepository.getArticles(mCurrentQuery, getFilteredQuery(), getSortBy(), getStartDate(), page);
+        mCurrentCall = mArticleRepository.getArticles(mCurrentQuery, getFilteredQuery(), getSortBy(), getStartDate(), getEndDate(), page);
         mCurrentCall.enqueue(new Callback<ArticleResponse>() {
             @Override
             public void onResponse(final Call<ArticleResponse> call, final Response<ArticleResponse> response) {
@@ -268,6 +268,14 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     private String getStartDate() {
         final Date startDate = mPreferencesRepository.getPreferredStartDate();
         return RepositoryUtils.getFormattedStartDate(startDate);
+    }
+
+    private String getEndDate() {
+        final Date endDate = mPreferencesRepository.getPreferredEndDate();
+        if (endDate == null) {
+            return null;
+        }
+        return RepositoryUtils.getFormattedStartDate(endDate);
     }
 
     private String getSortBy() {

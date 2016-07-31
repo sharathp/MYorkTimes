@@ -13,6 +13,7 @@ public interface ArticleRepository {
                                       @Query("fq") String formattedQuery,
                                       @Query("sort") String sort,
                                       @Query("begin_date") String beginDate,
+                                      @Query("end_date") String endDate,
                                       @Query("page") int page);
 
 }

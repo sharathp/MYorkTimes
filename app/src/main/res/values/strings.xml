@@ -14,9 +14,12 @@
     <string name="title_filters_sort">Sort By</string>
 
     <string name="filter_news_desk_none_selected">- None -</string>
+
     <string name="filter_label_from_date">From Date</string>
+    <string name="filter_label_to_date">To Date</string>
     <string name="filter_label_sort_order">Sort Order</string>
     <string name="filter_label_news_desk">News Desk</string>
+
     <string name="share_intent_title">Share using</string>
     <string name="author_name_unknown">N/A</string>
 

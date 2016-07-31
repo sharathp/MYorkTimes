@@ -7,6 +7,7 @@ public class Filters {
     private String mSort;
     private Set<String> mNewsDeskSections;
     private Date mStartDate;
+    private Date mEndDate;
 
     public String getSort() {
         return mSort;
@@ -30,5 +31,13 @@ public class Filters {
 
     public void setStartDate(final Date startDate) {
         mStartDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return mEndDate;
+    }
+
+    public void setEndDate(final Date endDate) {
+        mEndDate = endDate;
     }
 }

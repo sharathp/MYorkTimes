@@ -1,6 +1,5 @@
 package com.sharathp.myorktimes.fragments;
 
-import android.app.DatePickerDialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,21 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.DatePicker;
 
 import com.sharathp.myorktimes.MYorkTimesApplication;
 import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.databinding.FragmentFiltersBinding;
 import com.sharathp.myorktimes.models.Filters;
 import com.sharathp.myorktimes.repositories.LocalPreferencesRepository;
+import com.sharathp.myorktimes.util.DateUtils;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Set;
 
 import javax.inject.Inject;
 
-public class FiltersFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class FiltersFragment extends DialogFragment {
     private static final String TAG_DATE_PICKER = "datePicker";
 
     private FragmentFiltersBinding mBinding;
@@ -70,14 +69,10 @@ public class FiltersFragment extends DialogFragment implements DatePickerDialog.
         super.onResume();
     }
 
-    @Override
-    public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
-        final GregorianCalendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-        saveDate(new Date(calendar.getTimeInMillis()));
-    }
-
     private void initFilters() {
-        mBinding.llArticleFromDateContainer.setOnClickListener(v -> showCalendar());
+        mBinding.llArticleFromDateContainer.setOnClickListener(v -> showStartCalendar());
+
+        mBinding.llArticleToDateContainer.setOnClickListener(v -> showEndCalendar());
 
         mBinding.llArticleSortContainer.setOnClickListener(v -> showSortOptions());
 
@@ -118,21 +113,45 @@ public class FiltersFragment extends DialogFragment implements DatePickerDialog.
         return selected;
     }
 
-    private void showCalendar() {
+    private void showStartCalendar() {
         final DatePickerFragment datePickerFragment = DatePickerFragment.createInstance(mFilters.getStartDate().getTime());
         datePickerFragment.show(getChildFragmentManager(), TAG_DATE_PICKER);
-        datePickerFragment.setOnDateSetListener(this);
+        datePickerFragment.setOnDateSetListener((view, year, monthOfYear, dayOfMonth) -> {
+            final GregorianCalendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+            saveStartDate(new Date(calendar.getTimeInMillis()));
+        });
+    }
+
+    private void showEndCalendar() {
+        Date date = mFilters.getEndDate();
+        if (date == null) {
+            date = DateUtils.getToday();
+        }
+
+        final DatePickerFragment datePickerFragment = DatePickerFragment.createInstance(date.getTime());
+        datePickerFragment.show(getChildFragmentManager(), TAG_DATE_PICKER);
+        datePickerFragment.setOnDateSetListener((view, year, monthOfYear, dayOfMonth) -> {
+            final GregorianCalendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+            saveEndDate(new Date(calendar.getTimeInMillis()));
+        });
     }
 
     private void populateFilters() {
         mFilters.setNewsDeskSections(mPreferencesRepository.getPreferredNewsDeskSections());
         mFilters.setSort(mPreferencesRepository.getPreferredSortBy());
         mFilters.setStartDate(mPreferencesRepository.getPreferredStartDate());
+        mFilters.setEndDate(mPreferencesRepository.getPreferredEndDate());
     }
 
-    private void saveDate(final Date date) {
-        mPreferencesRepository.setPreferredDate(date);
+    private void saveStartDate(final Date date) {
+        mPreferencesRepository.setPreferredStartDate(date);
         mFilters.setStartDate(date);
+        mBinding.setFilters(mFilters);
+    }
+
+    private void saveEndDate(final Date date) {
+        mPreferencesRepository.setPreferredEndDate(date);
+        mFilters.setEndDate(date);
         mBinding.setFilters(mFilters);
     }
 

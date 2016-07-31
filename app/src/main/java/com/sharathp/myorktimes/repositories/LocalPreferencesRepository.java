@@ -16,8 +16,11 @@ import javax.inject.Singleton;
 @Singleton
 public class LocalPreferencesRepository {
     private static final String KEY_START_DATE = "MYORK_TIMES_PREF_START_DATE";
+    private static final String KEY_END_DATE = "MYORK_TIMES_PREF_END_DATE";
     private static final String KEY_SORT = "MYORK_TIMES_PREF_SORT";
     private static final String KEY_NEWS_DESK_SECTIONS = "MYORK_NEWS_DESK_SECTIONS";
+
+    private static final long INVALID_END_DATE = -1;
 
     private final SharedPreferences mSharedPreferences;
     private final Context mContext;
@@ -34,10 +37,25 @@ public class LocalPreferencesRepository {
         return new Date(startDate);
     }
 
-    public void setPreferredDate(final Date startDate) {
+    public void setPreferredStartDate(final Date startDate) {
         mSharedPreferences
                 .edit()
                 .putLong(KEY_START_DATE, startDate.getTime())
+                .commit();
+    }
+
+    public Date getPreferredEndDate() {
+        final long endDate = mSharedPreferences.getLong(KEY_END_DATE, INVALID_END_DATE);
+        if (INVALID_END_DATE == endDate) {
+            return null;
+        }
+        return new Date(endDate);
+    }
+
+    public void setPreferredEndDate(final Date endDate) {
+        mSharedPreferences
+                .edit()
+                .putLong(KEY_END_DATE, endDate.getTime())
                 .commit();
     }
 
