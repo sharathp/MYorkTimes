@@ -9,7 +9,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryLight">
 
         <ProgressBar
             android:id="@+id/pb_loading_progress_bar"
@@ -22,7 +23,6 @@
             android:id="@+id/tv_article_end_message"
             android:layout_width="match_parent"
             android:layout_height="@dimen/article_loading_indicator_height"
-            android:background="@android:color/white"
             android:gravity="center"
             android:text="@string/message_end_of_articles"
             android:textColor="@color/colorPrimaryDark"
