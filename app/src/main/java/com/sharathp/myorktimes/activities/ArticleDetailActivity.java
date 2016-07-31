@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -27,6 +29,37 @@ public class ArticleDetailActivity  extends AppCompatActivity {
         final Intent intent = new Intent(context, ArticleDetailActivity.class);
         intent.putExtra(EXTRA_ARTICLE, Parcels.wrap(article));
         return intent;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share : {
+                shareArticleLink();
+                return true;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void shareArticleLink() {
+        final Intent shareIntent = getShareIntent();
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_intent_title)));
+    }
+
+    private Intent getShareIntent() {
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, mArticle.getUrl());
+        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mArticle.getMainHeadLine());
+        return shareIntent;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_article_detail, menu);
+        return true;
     }
 
     @Override

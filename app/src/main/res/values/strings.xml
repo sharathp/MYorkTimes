@@ -2,8 +2,12 @@
     <string name="app_name">MYorkTimes</string>
 
     <string name="action_search">Search</string>
+    <string name="action_share">Share</string>
+
+    <string name="message_no_internet">No Internet Connectivity</string>
     <string name="message_end_of_articles">No more Articles to display</string>
     <string name="message_articles_initial">Start searching for articles above</string>
+
     <string name="label_filter">Filter</string>
     <string name="hint_article_from_date">From Date</string>
     <string name="title_search_filters">Search Filters</string>
@@ -13,6 +17,8 @@
     <string name="filter_label_from_date">From Date</string>
     <string name="filter_label_sort_order">Sort Order</string>
     <string name="filter_label_news_desk">News Desk</string>
+    <string name="share_intent_title">Share using</string>
+
 
     <string-array name="filter_sort_order">
         <item>Newest</item>

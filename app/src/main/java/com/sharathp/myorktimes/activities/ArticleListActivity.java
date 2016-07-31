@@ -24,6 +24,7 @@ import com.sharathp.myorktimes.models.Article;
 import com.sharathp.myorktimes.models.ArticleResponse;
 import com.sharathp.myorktimes.repositories.ArticleRepository;
 import com.sharathp.myorktimes.repositories.LocalPreferencesRepository;
+import com.sharathp.myorktimes.util.NetworkUtils;
 import com.sharathp.myorktimes.util.RepositoryUtil;
 import com.sharathp.myorktimes.views.ArticleListAdapter;
 import com.sharathp.myorktimes.views.EndlessRecyclerViewScrollListener;
@@ -70,18 +71,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         moviesRecyclerView.setAdapter(mArticleListAdapter);
         moviesRecyclerView.setLayoutManager(mLayoutManager);
-        mBinding.fabFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                showFiltersDialog();
-            }
-        });
-    }
-
-    private void showFiltersDialog() {
-        final FragmentManager fm = getSupportFragmentManager();
-        final FiltersFragment editNameDialogFragment = FiltersFragment.createInstance();
-        editNameDialogFragment.show(fm, "filters_fragment");
+        mBinding.fabFilter.setOnClickListener(v -> showFiltersDialog());
     }
 
     @Override
@@ -102,11 +92,6 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_article_list, menu);
@@ -119,12 +104,16 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
                 tryClearEndlessRecyclerViewScrollListener();
                 mArticleListAdapter.setArticles(null);
                 mArticleListAdapter.clearEndReached();
-                showInitialLoader();
 
-                mCurrentQuery = query;
-                // get the first page of results
-                retrieveResults(0);
+                if (! NetworkUtils.isOnline()) {
+                    showMessageIfInitialLoad(getString(R.string.message_no_internet));
+                } else {
+                    showInitialLoader();
 
+                    mCurrentQuery = query;
+                    // get the first page of results
+                    retrieveResults(0);
+                }
                 searchView.clearFocus();
                 return true;
             }
@@ -142,6 +131,12 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         et.setTextColor(color);
         et.setHintTextColor(color);
         return true;
+    }
+
+    private void showFiltersDialog() {
+        final FragmentManager fm = getSupportFragmentManager();
+        final FiltersFragment editNameDialogFragment = FiltersFragment.createInstance();
+        editNameDialogFragment.show(fm, "filters_fragment");
     }
 
     private void retrieveResults(final int page) {

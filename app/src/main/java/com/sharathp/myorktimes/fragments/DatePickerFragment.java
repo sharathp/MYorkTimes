@@ -12,7 +12,7 @@ import com.sharathp.myorktimes.util.DateUtils;
 import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment {
-    public static final String ARG_SELECTED_DATE = "DatePickerFragment.DATE";
+    public static final String ARG_SELECTED_DATE = DatePickerFragment.class.getSimpleName()+ ":DATE";
 
     private DatePickerDialog.OnDateSetListener mOnDateSetListener;
     private Long mSelectedDate;
