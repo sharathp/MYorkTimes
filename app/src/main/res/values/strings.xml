@@ -7,10 +7,23 @@
     <string name="label_filter">Filter</string>
     <string name="hint_article_from_date">From Date</string>
     <string name="title_search_filters">Search Filters</string>
+    <string name="title_filters_sort">Sort By</string>
 
+    <string name="filter_news_desk_none_selected">- None Selected -</string>
+    <string name="filter_label_from_date">From Date</string>
+    <string name="filter_label_sort_order">Sort Order</string>
+    <string name="filter_label_news_desk">News Desk</string>
 
-    <string-array name="search_sort_order">
-        <item>NEWEST</item>
-        <item>OLDEST</item>
+    <string-array name="filter_sort_order">
+        <item>Newest</item>
+        <item>Oldest</item>
     </string-array>
+
+    <string-array name="filter_news_desk">
+        <item>Arts</item>
+        <item>Fashion &amp; Style</item>
+        <item>Sports</item>
+    </string-array>
+
+
 </resources>

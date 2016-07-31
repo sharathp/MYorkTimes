@@ -257,4 +257,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         mBinding.rvArticles.removeOnScrollListener(mEndlessRecyclerViewScrollListener);
         mEndlessRecyclerViewScrollListener = null;
     }
+
+    private String getFilteredQuery() {
+        return null;
+    }
 }

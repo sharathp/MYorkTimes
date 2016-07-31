@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:focusableInTouchMode="true">
 
         <TextView
@@ -12,55 +13,61 @@
             android:layout_height="wrap_content"
             android:text="@string/title_search_filters"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_marginBottom="@dimen/margin_medium"
             android:textSize="16sp"
             android:textStyle="bold"
             android:background="@color/colorPrimaryLight"
             android:minHeight="?attr/actionBarSize"
             android:gravity="center"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_article_from_date"
-            android:layout_below="@id/tv_title"
-            android:layout_marginLeft="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small"
-            style="@style/FilterFloatingLabel">
+        <LinearLayout
+            android:id="@+id/ll_article_from_date_container"
+            style="@style/FilterContainer">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/tie_article_from_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_article_from_date"
-                android:imeOptions="actionNone"
-                style="@style/FilterFieldLabel"/>
-        </android.support.design.widget.TextInputLayout>
+            <TextView
+                style="@style/FilterLabel"
+                android:text="@string/filter_label_from_date" />
 
-        <View style="@style/Divider"
-              android:id="@+id/divider1"
-              android:layout_below="@id/til_article_from_date"
-              android:layout_marginBottom="@dimen/margin_medium" />
+            <TextView
+                android:id="@+id/tv_filter_start_date"
+                style="@style/FilterValue"
+                android:text="01 Jan 2010"/>
 
-        <TextView
-            android:id="@+id/tv_sort_order_label"
-            android:layout_below="@id/divider1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/til_article_from_date"
-            android:layout_marginRight="@dimen/margin_small"
-            android:text="Sort Order"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
+        </LinearLayout>
 
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/search_sort_order"
-            android:layout_alignBaseline="@id/tv_sort_order_label"
-            android:layout_toRightOf="@id/tv_sort_order_label" />
+        <View style="@style/DialogDivider" />
 
-    </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/ll_article_sort_container"
+            style="@style/FilterContainer">
+
+            <TextView
+                style="@style/FilterLabel"
+                android:text="@string/filter_label_sort_order" />
+
+            <TextView
+                android:id="@+id/tv_filter_sort"
+                style="@style/FilterValue"
+                android:text="Newest" />
+
+        </LinearLayout>
+
+        <View style="@style/DialogDivider" />
+
+        <LinearLayout
+            android:id="@+id/ll_article_news_desk_container"
+            style="@style/FilterContainer">
+
+            <TextView
+                style="@style/FilterLabel"
+                android:text="@string/filter_label_news_desk" />
+
+            <TextView
+                android:id="@+id/tv_filter_news_desk"
+                style="@style/FilterValue"
+                android:text="@string/filter_news_desk_none_selected"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </layout>
