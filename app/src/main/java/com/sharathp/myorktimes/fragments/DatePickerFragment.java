@@ -9,7 +9,6 @@ import android.support.v4.app.DialogFragment;
 
 import com.sharathp.myorktimes.util.DateUtils;
 
-import java.sql.Date;
 import java.util.Calendar;
 
 public class DatePickerFragment extends DialogFragment {
@@ -44,9 +43,6 @@ public class DatePickerFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        // use today as minimum
-        final Date today = DateUtils.getToday();
-
         final Calendar selectedCalendar = Calendar.getInstance();
         selectedCalendar.setTimeInMillis(mSelectedDate);
         final int selectedYear = selectedCalendar.get(Calendar.YEAR);

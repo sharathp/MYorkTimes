@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -22,8 +23,12 @@ public class RestModule {
     @NonNull
     @Provides
     public ArticleRepository providesArticleRepository() {
+        final HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
         final OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(new APIKeyInterceptor(BuildConfig.NYTIMES_API_TOKEN));
+        builder.addInterceptor(httpLoggingInterceptor);
 
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL_API_NY_TIMES)

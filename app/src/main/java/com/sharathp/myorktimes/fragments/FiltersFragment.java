@@ -17,7 +17,6 @@ import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.databinding.FragmentFiltersBinding;
 import com.sharathp.myorktimes.models.Filters;
 import com.sharathp.myorktimes.repositories.LocalPreferencesRepository;
-import com.sharathp.myorktimes.util.DateUtils;
 
 import java.sql.Date;
 import java.util.GregorianCalendar;
@@ -120,7 +119,7 @@ public class FiltersFragment extends DialogFragment implements DatePickerDialog.
     }
 
     private void showCalendar() {
-        final DatePickerFragment datePickerFragment = DatePickerFragment.createInstance(DateUtils.getToday().getTime());
+        final DatePickerFragment datePickerFragment = DatePickerFragment.createInstance(mFilters.getStartDate().getTime());
         datePickerFragment.show(getChildFragmentManager(), TAG_DATE_PICKER);
         datePickerFragment.setOnDateSetListener(this);
     }
