@@ -1,5 +1,6 @@
 package com.sharathp.myorktimes.activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -96,7 +97,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
     @Override
     public void onArticleSelected(final Article article) {
-        // no-op
+        final Intent intent = ArticleDetailActivity.createIntent(this, article);
+        startActivity(intent);
     }
 
     @Override

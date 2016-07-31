@@ -2,11 +2,15 @@ package com.sharathp.myorktimes.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+import org.parceler.Transient;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+@Parcel
 public class Article {
     private static final String KEY_HEADLINE_MAIN = "main";
 
@@ -14,21 +18,22 @@ public class Article {
     // private static final String SUBTYPE_THUMBNAIL = "thumbnail";
 
     @SerializedName("_id")
-    private String mId;
+    String mId;
 
     @SerializedName("web_url")
-    private String mUrl;
+    String mUrl;
 
     @SerializedName("headline")
-    private Map<String, String> mHeadLines;
+    Map<String, String> mHeadLines;
 
     @SerializedName("multimedia")
-    private List<Media> mMedia;
+    List<Media> mMedia;
 
     @SerializedName("pub_date")
-    private Date mPublishedDate;
+    Date mPublishedDate;
 
     // randomly chose media
+    @Transient
     private Media mSelectedMedia;
 
     public String getId() {
@@ -93,22 +98,23 @@ public class Article {
         return mSelectedMedia;
     }
 
+    @Parcel
     public static class Media {
 
         @SerializedName("width")
-        private int mWidth;
+        int mWidth;
 
         @SerializedName("height")
-        private int mHeight;
+        int mHeight;
 
         @SerializedName("url")
-        private String mUrl;
+        String mUrl;
 
         @SerializedName("type")
-        private String mType;
+        String mType;
 
         @SerializedName("subtype")
-        private String mSubtype;
+        String mSubtype;
 
         public int getWidth() {
             return mWidth;
