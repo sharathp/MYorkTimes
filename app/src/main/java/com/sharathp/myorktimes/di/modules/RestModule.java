@@ -8,7 +8,7 @@ import com.sharathp.myorktimes.models.Article;
 import com.sharathp.myorktimes.repositories.ArticleRepository;
 import com.sharathp.myorktimes.repositories.okhttp.APIKeyInterceptor;
 import com.sharathp.myorktimes.util.Constants;
-import com.sharathp.myorktimes.util.gson.ByLineSerializer;
+import com.sharathp.myorktimes.util.gson.ByLineDeserializer;
 
 import javax.inject.Singleton;
 
@@ -35,7 +35,7 @@ public class RestModule {
 
         final GsonBuilder gsonBuilder = new GsonBuilder();
         // TODO - register ByLineSerializer
-        gsonBuilder.registerTypeAdapter(Article.ByLine.class, new ByLineSerializer());
+        gsonBuilder.registerTypeAdapter(Article.ByLine.class, new ByLineDeserializer());
 
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL_API_NY_TIMES)

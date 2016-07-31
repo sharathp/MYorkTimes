@@ -9,7 +9,9 @@ import com.sharathp.myorktimes.models.Article;
 
 import java.lang.reflect.Type;
 
-public class ByLineSerializer implements JsonDeserializer<Article.ByLine> {
+public class ByLineDeserializer implements JsonDeserializer<Article.ByLine> {
+    // this is thread-safe
+    private final Gson mGson = new Gson();
 
     @Override
     public Article.ByLine deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException {
@@ -19,8 +21,6 @@ public class ByLineSerializer implements JsonDeserializer<Article.ByLine> {
             return null;
         }
 
-        final Gson gson = new Gson();
-
-        return gson.fromJson(json, Article.ByLine.class);
+        return mGson.fromJson(json, Article.ByLine.class);
     }
 }
