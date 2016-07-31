@@ -2,15 +2,11 @@ package com.sharathp.myorktimes.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.parceler.Parcel;
-import org.parceler.Transient;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-@Parcel
 public class Article {
     private static final String KEY_HEADLINE_MAIN = "main";
 
@@ -36,7 +32,6 @@ public class Article {
     ByLine mByLine;
 
     // randomly chose media
-    @Transient
     private Media mSelectedMedia;
 
     public String getId() {
@@ -109,7 +104,6 @@ public class Article {
         return mSelectedMedia;
     }
 
-    @Parcel
     public static class Media {
 
         @SerializedName("width")
@@ -150,25 +144,8 @@ public class Article {
         public void setUrl(final String url) {
             mUrl = url;
         }
-
-        public String getType() {
-            return mType;
-        }
-
-        public void setType(final String type) {
-            mType = type;
-        }
-
-        public String getSubtype() {
-            return mSubtype;
-        }
-
-        public void setSubtype(final String subtype) {
-            mSubtype = subtype;
-        }
     }
 
-    @Parcel
     public static class ByLine {
         private final static String PREFIX_BY = "By ";
 
@@ -184,14 +161,6 @@ public class Article {
 
         public void setOriginal(final String original) {
             mOriginal = original;
-        }
-
-        public String getOrganization() {
-            return mOrganization;
-        }
-
-        public void setOrganization(final String organization) {
-            mOrganization = organization;
         }
 
         // removes "By" if it exists

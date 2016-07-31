@@ -20,15 +20,16 @@ import com.sharathp.myorktimes.MYorkTimesApplication;
 import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.databinding.ActivityArticleListBinding;
 import com.sharathp.myorktimes.fragments.FiltersFragment;
-import com.sharathp.myorktimes.models.Article;
 import com.sharathp.myorktimes.models.ArticleResponse;
+import com.sharathp.myorktimes.models.SimpleArticle;
 import com.sharathp.myorktimes.repositories.ArticleRepository;
 import com.sharathp.myorktimes.repositories.LocalPreferencesRepository;
 import com.sharathp.myorktimes.util.NetworkUtils;
 import com.sharathp.myorktimes.util.RepositoryUtils;
 import com.sharathp.myorktimes.util.ViewUtils;
-import com.sharathp.myorktimes.views.ArticleListAdapter;
 import com.sharathp.myorktimes.views.EndlessRecyclerViewScrollListener;
+import com.sharathp.myorktimes.views.adapters.ArticleItemCallback;
+import com.sharathp.myorktimes.views.adapters.ArticlesListAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ArticleListActivity extends AppCompatActivity implements ArticleListAdapter.ArticleItemCallback {
+public class ArticleListActivity extends AppCompatActivity implements ArticleItemCallback {
     private static final String TAG = ArticleListActivity.class.getSimpleName();
 
     @Inject
@@ -49,7 +50,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     @Inject
     LocalPreferencesRepository mPreferencesRepository;
 
-    private ArticleListAdapter mArticleListAdapter;
+    private ArticlesListAdapter mArticleListAdapter;
     private ActivityArticleListBinding mBinding;
     private Call<ArticleResponse> mCurrentCall;
     private String mCurrentQuery;
@@ -68,7 +69,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
         ViewUtils.setToolbarTitleFont(this, mBinding.toolbarLayout.toolbarTitle);
 
-        mArticleListAdapter = new ArticleListAdapter(new ArrayList<>(), this);
+        mArticleListAdapter = new ArticlesListAdapter(new ArrayList<>(), this);
         final RecyclerView moviesRecyclerView = mBinding.rvArticles;
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
@@ -89,7 +90,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
     }
 
     @Override
-    public void onArticleSelected(final Article article) {
+    public void onArticleSelected(final SimpleArticle article) {
         final Intent intent = ArticleDetailActivity.createIntent(this, article);
         startActivity(intent);
     }
@@ -173,7 +174,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
                 showArticlesRecyclerViewIfInitialLoad();
                 setEndlessRecyclerViewScrollListener(articleResponse);
-                mArticleListAdapter.addMovies(articleResponse.getResponse().getDocs());
+                mArticleListAdapter.addArticles(SimpleArticle.convertArticles(articleResponse.getResponse().getDocs()));
                 Log.d(TAG, "Results size: " + mArticleListAdapter.getItemCount());
             }
 

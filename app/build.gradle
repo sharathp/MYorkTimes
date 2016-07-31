@@ -15,6 +15,7 @@ ext {
     DAGGER_VERSION = "2.4"
     JAVA_POET_VERSION = "1.7.0"
     PARCELER_VERSION = "1.1.5"
+    DBFLOW_VERSION = "3.1.1"
 }
 
 android {
@@ -78,6 +79,9 @@ dependencies {
     compile "com.squareup.picasso:picasso:$PICASSO_VERSION"
     compile "jp.wasabeef:picasso-transformations:$PICASSO_TRANSFORMATION_VERSION"
 
+    apt "com.github.Raizlabs.DBFlow:dbflow-processor:${DBFLOW_VERSION}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${DBFLOW_VERSION}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${DBFLOW_VERSION}"
 
     testCompile "junit:junit:$JUNIT_VERSION"
 }

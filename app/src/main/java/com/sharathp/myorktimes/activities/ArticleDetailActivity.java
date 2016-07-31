@@ -13,20 +13,27 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.sharathp.myorktimes.MYorkTimesApplication;
 import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.databinding.ActivityArticleDetailBinding;
-import com.sharathp.myorktimes.models.Article;
+import com.sharathp.myorktimes.models.SimpleArticle;
+import com.sharathp.myorktimes.repositories.BookmarksRepository;
 import com.sharathp.myorktimes.util.ViewUtils;
 
 import org.parceler.Parcels;
 
-public class ArticleDetailActivity  extends AppCompatActivity {
+import javax.inject.Inject;
+
+public class ArticleDetailActivity extends AppCompatActivity {
     public static final String EXTRA_ARTICLE = ArticleDetailActivity.class.getSimpleName() + ":ARTICLE";
 
-    private ActivityArticleDetailBinding mBinding;
-    private Article mArticle;
+    @Inject
+    BookmarksRepository mBookmarksRepository;
 
-    public static Intent createIntent(final Context context, final Article article) {
+    private ActivityArticleDetailBinding mBinding;
+    private SimpleArticle mArticle;
+
+    public static Intent createIntent(final Context context, final SimpleArticle article) {
         final Intent intent = new Intent(context, ArticleDetailActivity.class);
         intent.putExtra(EXTRA_ARTICLE, Parcels.wrap(article));
         return intent;
@@ -44,19 +51,6 @@ public class ArticleDetailActivity  extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void shareArticleLink() {
-        final Intent shareIntent = getShareIntent();
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_intent_title)));
-    }
-
-    private Intent getShareIntent() {
-        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, mArticle.getUrl());
-        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mArticle.getMainHeadLine());
-        return shareIntent;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu_article_detail, menu);
@@ -68,6 +62,7 @@ public class ArticleDetailActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_article_detail);
+        MYorkTimesApplication.from(this).getComponent().inject(this);
 
         setSupportActionBar(mBinding.toolbarLayout.toolbar);
         mBinding.toolbarLayout.toolbarIcon.setVisibility(View.GONE);
@@ -102,6 +97,18 @@ public class ArticleDetailActivity  extends AppCompatActivity {
         webView.loadUrl(mArticle.getUrl());
     }
 
+    private void shareArticleLink() {
+        final Intent shareIntent = getShareIntent();
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_intent_title)));
+    }
+
+    private Intent getShareIntent() {
+        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, mArticle.getUrl());
+        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, mArticle.getHeadLine());
+        return shareIntent;
+    }
 
     // Manages the behavior when URLs are loaded
     class MyBrowser extends WebViewClient {
