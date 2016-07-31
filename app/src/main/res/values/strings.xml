@@ -23,6 +23,10 @@
     <string name="share_intent_title">Share using</string>
     <string name="author_name_unknown">N/A</string>
 
+    <string name="message_no_bookmarks">No Bookmarks</string>
+    <string name="action_remove_bookmark">Remove Bookmark</string>
+    <string name="action_add_bookmark">Add Bookmark</string>
+
 
     <string-array name="filter_sort_order">
         <item>Newest</item>

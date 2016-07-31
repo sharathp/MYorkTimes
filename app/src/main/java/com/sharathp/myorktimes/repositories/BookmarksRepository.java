@@ -22,7 +22,7 @@ public class BookmarksRepository {
     }
 
     // assumes all entries are bookmarked
-    public void retrieveAllBookmarkedArticles(final RetrieveCallback retrieveCallback) {
+    public void retrieveAllBookmarks(final RetrieveCallback retrieveCallback) {
         SQLite.select()
                 .from(SimpleArticle.class)
                 .async()
@@ -73,13 +73,6 @@ public class BookmarksRepository {
          * @param bookmarks - bookmarks
          */
         void bookmarksRetrievedSuccessfully(List<SimpleArticle> bookmarks);
-
-        /**
-         * Notify that bookmarks are updated.
-         *
-         * @param bookmarks - bookmarks
-         */
-        void bookmarksUpdated(List<SimpleArticle> bookmarks);
     }
 
     public interface InsertCallback {
@@ -126,6 +119,6 @@ public class BookmarksRepository {
          * @param article - article
          * @param isBookmared - flag indicating whether article is bookmarked
          */
-        void existsCheckSuccessfully(SimpleArticle article, boolean isBookmared);
+        void existsCheckSuccessfully(SimpleArticle article, boolean isBookmarked);
     }
 }

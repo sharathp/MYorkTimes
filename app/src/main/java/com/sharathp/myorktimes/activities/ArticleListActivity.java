@@ -1,6 +1,5 @@
 package com.sharathp.myorktimes.activities;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +23,7 @@ import com.sharathp.myorktimes.models.ArticleResponse;
 import com.sharathp.myorktimes.models.SimpleArticle;
 import com.sharathp.myorktimes.repositories.ArticleRepository;
 import com.sharathp.myorktimes.repositories.LocalPreferencesRepository;
+import com.sharathp.myorktimes.util.NavigationUtils;
 import com.sharathp.myorktimes.util.NetworkUtils;
 import com.sharathp.myorktimes.util.RepositoryUtils;
 import com.sharathp.myorktimes.util.ViewUtils;
@@ -91,8 +91,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleIte
 
     @Override
     public void onArticleSelected(final SimpleArticle article) {
-        final Intent intent = ArticleDetailActivity.createIntent(this, article);
-        startActivity(intent);
+        startActivity(NavigationUtils.getDetailActivityIntent(this, article));
     }
 
     @Override

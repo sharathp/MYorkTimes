@@ -4,6 +4,7 @@ import com.sharathp.myorktimes.activities.ArticleDetailActivity;
 import com.sharathp.myorktimes.activities.ArticleListActivity;
 import com.sharathp.myorktimes.di.modules.ApplicationModule;
 import com.sharathp.myorktimes.di.modules.RestModule;
+import com.sharathp.myorktimes.fragments.BookmarkListFragment;
 import com.sharathp.myorktimes.fragments.FiltersFragment;
 
 import javax.inject.Singleton;
@@ -19,4 +20,6 @@ public interface ApplicationComponent {
     void inject(FiltersFragment filtersFragment);
 
     void inject(ArticleDetailActivity articleDetailActivity);
+
+    void inject(BookmarkListFragment bookmarkListFragment);
 }
