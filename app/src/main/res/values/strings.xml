@@ -21,7 +21,9 @@
 
     <string-array name="filter_news_desk">
         <item>Arts</item>
+        <item>Education</item>
         <item>Fashion &amp; Style</item>
+        <item>Health</item>
         <item>Sports</item>
     </string-array>
 

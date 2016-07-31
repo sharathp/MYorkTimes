@@ -22,10 +22,14 @@ import com.sharathp.myorktimes.fragments.FiltersFragment;
 import com.sharathp.myorktimes.models.Article;
 import com.sharathp.myorktimes.models.ArticleResponse;
 import com.sharathp.myorktimes.repositories.ArticleRepository;
+import com.sharathp.myorktimes.repositories.LocalPreferencesRepository;
+import com.sharathp.myorktimes.util.RepositoryUtil;
 import com.sharathp.myorktimes.views.ArticleListAdapter;
 import com.sharathp.myorktimes.views.EndlessRecyclerViewScrollListener;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -38,6 +42,9 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
     @Inject
     ArticleRepository mArticleRepository;
+
+    @Inject
+    LocalPreferencesRepository mPreferencesRepository;
 
     private ArticleListAdapter mArticleListAdapter;
     private ActivityArticleListBinding mBinding;
@@ -146,7 +153,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
             return;
         }
 
-        mCurrentCall = mArticleRepository.getArticles(mCurrentQuery, "oldest", "20160112", page);
+        mCurrentCall = mArticleRepository.getArticles(mCurrentQuery, getFilteredQuery(), getSortBy(), getStartDate(), page);
         mCurrentCall.enqueue(new Callback<ArticleResponse>() {
             @Override
             public void onResponse(final Call<ArticleResponse> call, final Response<ArticleResponse> response) {
@@ -258,7 +265,17 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         mEndlessRecyclerViewScrollListener = null;
     }
 
+    private String getStartDate() {
+        final Date startDate = mPreferencesRepository.getPreferredStartDate();
+        return RepositoryUtil.getFormattedStartDate(startDate);
+    }
+
+    private String getSortBy() {
+        return mPreferencesRepository.getPreferredSortBy();
+    }
+
     private String getFilteredQuery() {
-        return null;
+        final Set<String> sections = mPreferencesRepository.getPreferredNewsDeskSections();
+        return RepositoryUtil.getFilteredQuery(sections);
     }
 }
