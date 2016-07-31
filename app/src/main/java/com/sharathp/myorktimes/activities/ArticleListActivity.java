@@ -25,7 +25,8 @@ import com.sharathp.myorktimes.models.ArticleResponse;
 import com.sharathp.myorktimes.repositories.ArticleRepository;
 import com.sharathp.myorktimes.repositories.LocalPreferencesRepository;
 import com.sharathp.myorktimes.util.NetworkUtils;
-import com.sharathp.myorktimes.util.RepositoryUtil;
+import com.sharathp.myorktimes.util.RepositoryUtils;
+import com.sharathp.myorktimes.util.ViewUtils;
 import com.sharathp.myorktimes.views.ArticleListAdapter;
 import com.sharathp.myorktimes.views.EndlessRecyclerViewScrollListener;
 
@@ -64,6 +65,8 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_article_list);
         setSupportActionBar(mBinding.toolbarLayout.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        ViewUtils.setToolbarTitleFont(this, mBinding.toolbarLayout.toolbarTitle);
 
         mArticleListAdapter = new ArticleListAdapter(new ArrayList<>(), this);
         final RecyclerView moviesRecyclerView = mBinding.rvArticles;
@@ -264,7 +267,7 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
     private String getStartDate() {
         final Date startDate = mPreferencesRepository.getPreferredStartDate();
-        return RepositoryUtil.getFormattedStartDate(startDate);
+        return RepositoryUtils.getFormattedStartDate(startDate);
     }
 
     private String getSortBy() {
@@ -273,6 +276,6 @@ public class ArticleListActivity extends AppCompatActivity implements ArticleLis
 
     private String getFilteredQuery() {
         final Set<String> sections = mPreferencesRepository.getPreferredNewsDeskSections();
-        return RepositoryUtil.getFilteredQuery(sections);
+        return RepositoryUtils.getFilteredQuery(sections);
     }
 }

@@ -16,6 +16,7 @@ import android.webkit.WebViewClient;
 import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.databinding.ActivityArticleDetailBinding;
 import com.sharathp.myorktimes.models.Article;
+import com.sharathp.myorktimes.util.ViewUtils;
 
 import org.parceler.Parcels;
 
@@ -72,6 +73,8 @@ public class ArticleDetailActivity  extends AppCompatActivity {
         mBinding.toolbarLayout.toolbarIcon.setVisibility(View.GONE);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ViewUtils.setToolbarTitleFont(this, mBinding.toolbarLayout.toolbarTitle);
 
         mArticle = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_ARTICLE));
         configureWebView();

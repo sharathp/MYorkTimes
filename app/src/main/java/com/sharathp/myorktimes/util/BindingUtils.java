@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
-public class BindingUtil {
+public class BindingUtils {
     private static final String DATE_FORMAT_START_DATE = "MMMM d, yyyy";
 
     @BindingAdapter({"bind:filterStartDate"})

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
-public class RepositoryUtil {
+public class RepositoryUtils {
     private static final String DATE_FORMAT_REPOSITORY = "yyyyMMdd";
     private static final String NEWS_DESK_PREFIX = "news_desk";
 

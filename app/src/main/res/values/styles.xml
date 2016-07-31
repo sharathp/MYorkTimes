@@ -19,7 +19,7 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:background">#d2d2d2</item>
+        <item name="android:background">@color/colorDivider</item>
     </style>
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
