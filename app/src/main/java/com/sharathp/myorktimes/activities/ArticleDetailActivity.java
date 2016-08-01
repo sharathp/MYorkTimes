@@ -91,7 +91,7 @@ public class ArticleDetailActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ViewUtils.setToolbarTitleFont(this, mBinding.toolbarLayout.toolbarTitle);
+        ViewUtils.setFancyFont(this, mBinding.toolbarLayout.toolbarTitle);
 
         mArticle = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_ARTICLE));
         configureWebView();

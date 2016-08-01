@@ -12,9 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="@dimen/margin_large"
-        android:src="@drawable/ic_launcher"/>
+        android:src="@drawable/ic_launcher_inverse"/>
 
     <TextView
+        android:id="@+id/tv_drawer_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/iv_launcher_image"

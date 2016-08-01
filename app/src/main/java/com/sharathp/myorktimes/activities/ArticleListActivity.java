@@ -14,12 +14,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.sharathp.myorktimes.R;
 import com.sharathp.myorktimes.databinding.ActivityArticleListBinding;
 import com.sharathp.myorktimes.fragments.ArticleListFragment;
 import com.sharathp.myorktimes.fragments.BookmarkListFragment;
 import com.sharathp.myorktimes.fragments.FiltersFragment;
+import com.sharathp.myorktimes.util.ViewUtils;
 
 public class ArticleListActivity extends AppCompatActivity {
     private static final String TAG = ArticleListActivity.class.getSimpleName();
@@ -29,6 +31,7 @@ public class ArticleListActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private NavigationView mDrawer;
     private FloatingActionButton mFiltersFab;
+    private TextView mToolbarTitleTextView;
 
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -41,13 +44,20 @@ public class ArticleListActivity extends AppCompatActivity {
         mDrawerLayout = binding.drawerLayout;
         mDrawer = binding.nvDrawer;
         mFiltersFab = binding.fabFilter;
+        mToolbarTitleTextView = binding.tvToolbarTitle;
 
         mFiltersFab.setOnClickListener(v -> showFiltersDialog());
+        ViewUtils.setFancyFont(this, mToolbarTitleTextView);
+
+        final TextView drawerTitleTextView = (TextView) mDrawer.getHeaderView(0).findViewById(R.id.tv_drawer_title);
+        ViewUtils.setFancyFont(this, drawerTitleTextView);
 
         mDrawerToggle = setupDrawerToggle();
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         setupDrawerContent();
 
         showHome();
@@ -122,7 +132,7 @@ public class ArticleListActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.fl_content, fragment).commit();
 
         menuItem.setChecked(true);
-        setTitle(menuItem.getTitle());
+        mToolbarTitleTextView.setText(menuItem.getTitle());
         mDrawerLayout.closeDrawers();
     }
 }
