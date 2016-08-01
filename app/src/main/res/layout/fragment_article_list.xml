@@ -7,7 +7,7 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_bookmarks"
+            android:id="@+id/rv_articles"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -21,7 +21,7 @@
             android:paddingLeft="@dimen/margin_xxsmall">
 
             <ProgressBar
-                android:id="@+id/pb_all_bookmarks_loading_bar"
+                android:id="@+id/pb_all_articles_loading_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -30,17 +30,16 @@
                 android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/tv_bookmarks_message"
+                android:id="@+id/tv_articles_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/message_no_bookmarks"
+                android:text="@string/message_articles_initial"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:textSize="@dimen/text_size_message_article_list"/>
         </FrameLayout>
 
     </FrameLayout>
-
 </layout>

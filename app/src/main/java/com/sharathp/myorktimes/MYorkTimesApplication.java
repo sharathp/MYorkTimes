@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.Stetho;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.sharathp.myorktimes.di.ApplicationComponent;
@@ -18,6 +19,7 @@ public class MYorkTimesApplication extends Application {
         super.onCreate();
         initDependencyInjection();
         initDatabase();
+        initStetho();
     }
 
     private void initDependencyInjection() {
@@ -28,6 +30,11 @@ public class MYorkTimesApplication extends Application {
 
     private void initDatabase() {
         FlowManager.init(new FlowConfig.Builder(this).build());
+    }
+
+
+    private void initStetho() {
+        Stetho.initializeWithDefaults(this);
     }
 
     public ApplicationComponent getComponent() {

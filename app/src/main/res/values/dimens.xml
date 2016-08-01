@@ -17,5 +17,6 @@
     <dimen name="fab_elevation">4dp</dimen>
 
     <dimen name="toolbar_title_text_size">20sp</dimen>
+    <dimen name="text_size_nav_drawer_title">18sp</dimen>
 
 </resources>

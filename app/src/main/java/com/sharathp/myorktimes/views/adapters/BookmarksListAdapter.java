@@ -29,7 +29,7 @@ public class BookmarksListAdapter extends RecyclerView.Adapter<AbstractArticleVi
     public int getItemViewType(final int position) {
         final SimpleArticle article = mArticles.get(position);
 
-        if (article.getMediaUrl() != null) {
+        if (article.getMediaUrl() == null) {
             return TYPE_TEXT_ARTICLE;
         } else {
             return TYPE_IMAGE_ARTICLE;
@@ -69,8 +69,7 @@ public class BookmarksListAdapter extends RecyclerView.Adapter<AbstractArticleVi
             return 0;
         }
 
-        // to show the spinner
-        return mArticles.size() + 1;
+        return mArticles.size();
     }
 
     public void setBookmarks(final List<SimpleArticle> articles) {

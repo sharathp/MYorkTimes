@@ -20,6 +20,7 @@ import com.sharathp.myorktimes.views.adapters.ArticleItemCallback;
 import com.sharathp.myorktimes.views.adapters.BookmarksListAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,6 +30,10 @@ public class BookmarkListFragment extends Fragment implements ArticleItemCallbac
     BookmarksRepository mBookmarksRepository;
     private FragmentBookmarksListBinding mBinding;
     private BookmarksListAdapter mBookmarksListAdapter;
+
+    public static Fragment createInstance() {
+        return new BookmarkListFragment();
+    }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -51,8 +56,9 @@ public class BookmarkListFragment extends Fragment implements ArticleItemCallbac
     @Override
     public void onResume() {
         super.onResume();
+        resetVisibility();
         // retrieve bookmarks
-        mBookmarksRepository.retrieveAllBookmarks(bookmarks -> mBookmarksListAdapter.addBookmarks(bookmarks));
+        mBookmarksRepository.retrieveAllBookmarks(bookmarks -> addBookmarks(bookmarks));
     }
 
     @Override
@@ -60,6 +66,28 @@ public class BookmarkListFragment extends Fragment implements ArticleItemCallbac
         super.onPause();
         // clear bookmarks, next resume will update the bookmarks
         mBookmarksListAdapter.setBookmarks(null);
+    }
+
+    private void addBookmarks(final List<SimpleArticle> bookmarks) {
+        mBinding.pbAllBookmarksLoadingBar.setVisibility(View.GONE);
+
+        if (bookmarks == null || bookmarks.isEmpty()) {
+            mBinding.rvBookmarks.setVisibility(View.GONE);
+            mBinding.flMessageContainer.setVisibility(View.VISIBLE);
+            mBinding.tvBookmarksMessage.setVisibility(View.VISIBLE);
+        } else {
+            mBinding.rvBookmarks.setVisibility(View.VISIBLE);
+            mBinding.flMessageContainer.setVisibility(View.GONE);
+            mBinding.tvBookmarksMessage.setVisibility(View.GONE);
+            mBookmarksListAdapter.addBookmarks(bookmarks);
+        }
+    }
+
+    private void resetVisibility() {
+        mBinding.rvBookmarks.setVisibility(View.GONE);
+        mBinding.flMessageContainer.setVisibility(View.VISIBLE);
+        mBinding.pbAllBookmarksLoadingBar.setVisibility(View.VISIBLE);
+        mBinding.tvBookmarksMessage.setVisibility(View.GONE);
     }
 
     private void initViews() {

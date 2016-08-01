@@ -26,6 +26,10 @@
     <string name="message_no_bookmarks">No Bookmarks</string>
     <string name="action_remove_bookmark">Remove Bookmark</string>
     <string name="action_add_bookmark">Add Bookmark</string>
+    <string name="drawer_label_bookmark">Bookmarks</string>
+    <string name="drawer_label_home">Home</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
 
     <string-array name="filter_sort_order">

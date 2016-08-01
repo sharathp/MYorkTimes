@@ -96,7 +96,12 @@ public class ArticleDetailActivity extends AppCompatActivity implements
         mArticle = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_ARTICLE));
         configureWebView();
 
-        mBookmarksRepository.isArticleBookmarked(mArticle, this);
+        mBinding.webview.post(new Runnable() {
+            @Override
+            public void run() {
+                mBookmarksRepository.isArticleBookmarked(mArticle, ArticleDetailActivity.this);
+            }
+        });
     }
 
     @Override

@@ -28,7 +28,8 @@ public class BookmarksRepository {
                 .async()
                 .queryListResultCallback((transaction, tResult) -> {
                     retrieveCallback.bookmarksRetrievedSuccessfully(tResult);
-                });
+                })
+                .execute();
     }
 
     public void deleteBookmark(final SimpleArticle simpleArticle, final DeleteCallback deleteCallback) {
@@ -117,7 +118,7 @@ public class BookmarksRepository {
          * Notify that check is successful.
          *
          * @param article - article
-         * @param isBookmared - flag indicating whether article is bookmarked
+         * @param isBookmarked - flag indicating whether article is bookmarked
          */
         void existsCheckSuccessfully(SimpleArticle article, boolean isBookmarked);
     }
